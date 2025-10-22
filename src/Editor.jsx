@@ -10,3 +10,18 @@ export default function Editor(){
         </div>
     );
 }
+const startDictation =() => {
+    const recognition = new.webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.lang = 'en-uk';
+    recognition.onresult = (event) => {
+        const text = Array.from(event.results)
+        .map(result => result[0].transcript)
+        .join('');
+    setContent(prev => prev +' '+ text);
+    };
+    recognition.startDictation();
+};
+
+<button onClick = {startDictation}>Start Dictation</button>
+
