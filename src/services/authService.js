@@ -1,0 +1,10 @@
+const API_URL = "http://localhost:5173/api/auth";
+
+export async function registerUser(userData){
+    const response = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers:{"Content-Type": "application/json"},
+        body: JSON.stringify(userData),
+    });
+    return response.json();
+}
