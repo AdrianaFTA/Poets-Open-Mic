@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { loginUser } from "../services/authService"; 
+import { loginUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");  
-  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -20,15 +20,13 @@ export default function Login() {
 
       if (result.token) {
         localStorage.setItem("token", result.token);
-        navigate("/"); // redirect to home page
+        navigate("/"); // home page
       } else {
         setError(result.message || "Login failed. Please try again.");
       }
-
     } catch (err) {
       console.error(err);
       setError("An error occurred during login.");
-
     } finally {
       setLoading(false);
     }
@@ -42,9 +40,7 @@ export default function Login() {
       >
         <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
 
-        {error && (
-          <p className="text-red-500 text-sm mb-3">{error}</p> // ❌ FIXED missing bracket
-        )}
+        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
         <label className="block mb-2 text-gray-700">Email</label>
         <input
