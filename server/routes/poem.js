@@ -1,22 +1,26 @@
-const API_URL = "http://localhost:3000/api/poems";
+const express = require("expresss");
+const router = express.Router();
+const authenticateToken = require("../middleware/auth");
+const db = require("../db");
 
-export async function createPoem(poem, token) {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(poem),
-  });
-  return response.json();
-}
+//create poem
+router.post("/", authenticateToken, async (req, res) =>{
+    try{
+        const {title, content} = req.body;
 
-export async function classifyPoem(text) {
-  const response = await fetch("http://localhost:3000/api/classify", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text }),
-  });
-  return response.json();
-}
+        const result = await db.query(`INSERT INTO poems(title, content, user_id) VALUES($1, $2, $3) RETURNING *`, [title, content, req.user.id]);
+
+        res.json(result.rows[0]);
+    } catch  (err) {
+        console.error("Create Poem ERROR:", err);
+        res.status(500).json({ message: "Error when saving poem"});
+    }
+    });
+
+    // get poems 
+    router.get("/", async (req, res) =>{
+        const poems = await db.query("SELECT * FROM poems ORDER BY id DESC");
+        res.json(poems.rows);
+    });
+
+    module.exports = router;
