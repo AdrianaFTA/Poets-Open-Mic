@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5173/api/auth"; //  backend base URL
+const API_URL = "http://localhost:3000/api/auth"; //  backend base URL
 
 export async function registerUser(userData) {
   const response = await fetch(`${API_URL}/register`, {
