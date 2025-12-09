@@ -5,6 +5,8 @@ export default function Editor() {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const token = localStorage.getItem("token"); // retrieved after login
+  const [result, setResult] = useState(null);
+
 
   const handleSave = async () => {
     const result = await createPoem({ title, content }, token);
