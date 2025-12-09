@@ -23,7 +23,7 @@ export default function Login(){
                 navigate("/"); // home page
             }else{
                 setError(result.message || " login failed, Please try again.");
-
+            }
             }catch(err){
                 console.error(err);
                 setError("An error occured during login.");
@@ -40,7 +40,7 @@ export default function Login(){
                 >
                 <h2 className="text-2xl font-bold mb-4 text-center"></h2>
 
-                {error && <p className="text-red-500 text-sm mb-3">{error</p>}
+                {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
                 <label className="block mb-2 text-gray-700">Email</label>
                 <input
