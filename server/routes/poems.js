@@ -1,6 +1,6 @@
-const express = require("expresss");
+const express = require("express");
 const router = express.Router();
-const authenticateToken = require("./auth");
+const authenticateToken = require("./middleware/auth");
 const db = require("../db");
 
 //create poem
