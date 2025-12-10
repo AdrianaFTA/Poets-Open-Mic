@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.NLP_PORT || 5000;
 
 // NLP classifier
-const classifier = new natural.ApparatusBayesClassifier();
+const classifier = new natural.BayesClassifier();
 // traing data
 classifier.addDocument('The sun shines bright and the birds sing a sweet song.', 'Optimistic');
 classifier.addDocument('Dark clouds gather, a somber day approaches.', 'Melancholic');
