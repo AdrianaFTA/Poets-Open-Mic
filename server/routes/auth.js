@@ -1,9 +1,10 @@
-const express = require("express");
-const router = express.Router();
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const db = require("../db.js");
-const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
+import express from "express";
+import router from "router";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import db from "../db.js";
+
+const JWT_SECRET = process.env.JWT_SECRET || "secret_key";
 
 // REGISTER USER
 router.post("/register", async (req, res) => {
