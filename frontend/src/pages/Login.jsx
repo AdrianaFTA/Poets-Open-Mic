@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { loginUser } from "../services/authService"; 
 import { useNavigate } from "react-router-dom";
+import axious from 'axios';
+
+const API_URl ='http://localhost:3000/auth/login';
 
 export default function Login(){
     const [email, setEmail] = useState("");
