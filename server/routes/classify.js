@@ -1,7 +1,10 @@
-const express = require("express");
+import express from 'express'; 
 const router = express.Router();
 
-router.post("/poem", async (req, res) => {
+const NLP_SERVICE_URL = 'http://localhost:5000';
+
+
+router.post("/poems", async (req, res) => {
     // content from client request
     const { content } = req.body;
 
@@ -47,4 +50,4 @@ router.post("/poem", async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

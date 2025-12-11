@@ -1,11 +1,11 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const authenticateToken = require("../middleware/auth.js");
-const db = require("../db.js");
+import authenticateToken from "../middleware/auth.js";
+import db from "../db.js";
 
 //create poem
 router.post("/", authenticateToken, async (req, res) =>{
-    try{
+    try{ 
         const {title, content} = req.body;
 
         //input validation
@@ -34,4 +34,4 @@ router.get("/", async (req, res) => {
     
     }
 });
-module.exports = router; 
+export default router; 
