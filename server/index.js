@@ -1,6 +1,12 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config(); // Loads environment variables
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import authRouter from './routes/auth.js';
+import classificationRouter from './routes/classify.js';
+import poemsRouter from './routes/poems.js';
+
 
 // Express app
 const app = express();
@@ -11,13 +17,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-const authRoutes = require("./routes/auth.cjs");
-const poemRoutes = require("./routes/poems.js");
-const classifyRoutes = require("./routes/classify.cjs");
-
-app.use("/api/auth", authRoutes);
-app.use("/api/poems", poemRoutes);
-app.use("/api/classify", classifyRoutes);
+app.use("/auth", authRouter);
+app.use("/poems", poemsRouter);
+app.use("/classify", classificationRouter);
 
 // Health check endpoint
 app.get("/", (req, res) => {
