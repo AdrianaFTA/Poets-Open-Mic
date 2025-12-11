@@ -1,5 +1,5 @@
 import express from "express";
-import router from "router";
+const router = express.Router();
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import db from "../db.js";
