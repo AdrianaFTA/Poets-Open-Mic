@@ -1,4 +1,7 @@
-const { Pool } = require("pg");
+import {Pool} from "pg";
+import dotenv from 'dotenv';
+
+dotenv.config();
 if(!process.env.PG_USER || !process.env.PG_HOST || !process.env.PG_DATABASE || !process.env.PG_PORT){
     console.error("FATAL ERROR: Database enviroment variables (PG_USER, PG_HOST, etc.) are missing");
 }
@@ -17,4 +20,4 @@ pool.on('connect', () => {
 pool.on('error', (err, client) =>{
     console.error('Unexpected error on idle client', err);
 });
-module.exports = pool;
+export default pool;
