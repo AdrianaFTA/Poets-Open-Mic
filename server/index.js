@@ -11,9 +11,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-const authRoutes = require("./routes/auth");
-const poemRoutes = require("./routes/poems");
-const classifyRoutes = require("./routes/classify");
+const authRoutes = require("./routes/auth.cjs");
+const poemRoutes = require("./routes/poems.js");
+const classifyRoutes = require("./routes/classify.cjs");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/poems", poemRoutes);

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const authenticateToken = require("../middleware/auth");
-const db = require("../db");
+const authenticateToken = require("../middleware/auth.js");
+const db = require("../db.js");
 
 //create poem
 router.post("/", authenticateToken, async (req, res) =>{
