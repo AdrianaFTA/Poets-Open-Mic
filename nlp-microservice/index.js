@@ -6,6 +6,7 @@ const natural = require('natural');
 
 //express app
 const app = express();
+app.use(express.json()); // This allows the NLP service to read JSON data
 const PORT = process.env.NLP_PORT || 5000;
 
 // NLP classifier
