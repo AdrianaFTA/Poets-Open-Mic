@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createPoem } from "../services/poemService";
+import { createPoem, classifyPoem } from "../services/poemService";
 
 export default function Editor() {
   const [content, setContent] = useState("");
@@ -10,7 +10,7 @@ export default function Editor() {
 
 
   const handleSave = async () => {
-    const result = await createPoem({ title, content }, token);
+    const res = await createPoem({ title, content }, token);
     console.log(res);
   };
 
