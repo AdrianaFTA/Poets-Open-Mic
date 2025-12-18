@@ -1,7 +1,12 @@
 import {Pool} from "pg";
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from "url";
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({path: path.resolve(__dirname, '.env')} );
 if(!process.env.PG_USER || !process.env.PG_HOST || !process.env.PG_DATABASE || !process.env.PG_PORT){
     console.error("FATAL ERROR: Database enviroment variables (PG_USER, PG_HOST, etc.) are missing");
 }
