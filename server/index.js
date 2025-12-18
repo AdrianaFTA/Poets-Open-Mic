@@ -17,8 +17,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/auth", authRouter);
-app.use("/poems", poemsRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/poems", poemsRouter);
 app.use("/classify", classificationRouter);
 
 // Health check endpoint
