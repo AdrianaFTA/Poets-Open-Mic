@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axious from 'axios';
+import axios from 'axios';
 
 const API_URl ='http://localhost:3000/auth/login';
 
 export default function Login(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const {error, setError} = useState("");
-    const[loading,setLoading] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -18,18 +18,24 @@ export default function Login(){
         setError("");
 
         try{
-            const result = await loginUser({email, password});
+            const response = await axios.post(API_URl, { email, password});
+            const result = response.data;
 
             if(result.token){
                 localStorage.setItem("token", result.token);
                 navigate("/"); // home page
             }else{
-                setError(result.message || " login failed, Please try again.");
+                setError(result.message || " Login failed. Please try again.");
             }
             }catch(err){
-                console.error(err);
-                setError("An error occured during login.");
-            }finally{
+                console.error("Login API Error", err);
+                if (err.response && err.response.data && err.response.data.message) {
+                    setError(err.response.data.message);
+                } else {
+                    setError ("An error occured during Login. Check server status.");
+                }
+                
+            } finally{
                 setLoading(false);
             }
         };
@@ -82,4 +88,5 @@ export default function Login(){
             </div>
 
         );
+
     }
