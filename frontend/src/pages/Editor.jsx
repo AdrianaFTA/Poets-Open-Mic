@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { createPoem, classifyPoem } from "../services/poemService";
+import SpeechToText from "../components/SpeechToText";
+
 
 export default function Editor() {
   const [content, setContent] = useState("");
@@ -48,6 +50,11 @@ export default function Editor() {
         placeholder="Write poem here..."
         className="border p-2 w-full h-40 bg-gray-800 text-white"
       />
+      <SpeechToText
+  onResult={(spokenText) =>
+    setContent((prev) => prev + "\n " + spokenText)
+  }
+/>
 
       <div className="flex gap-2 mt-2">
         <button onClick={handleClassify} className="bg-purple-600 p-2 rounded">
