@@ -13,6 +13,7 @@ import poemsRouter from './routes/poems.js';
 const app = express();
 const PORT = process.env.PORT || 5001;
 
+// Swagger config
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
@@ -21,13 +22,9 @@ const swaggerOptions = {
       version: '1.0.0',
       description: 'API documentation for poetry NLP and management',
     },
-    servers: [
-      {
-        url: `http://localhost:${PORT}`,
-      },
-    ],
+    servers: [{ url: `http://localhost:${PORT}` }],
   },
-  apis: ['./server/routes/*.js'], // simpler + safer
+  apis: ['./server/routes/*.js'], // matches route files
 };
 
 const specs = swaggerJsdoc(swaggerOptions);
@@ -35,17 +32,21 @@ const specs = swaggerJsdoc(swaggerOptions);
 app.use(cors());
 app.use(express.json());
 
+// Swagger UI route
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
+// Routes
 app.use("/api/auth", authRouter);
 app.use("/api/poems", poemsRouter);
 app.use("/classify", classificationRouter);
 
+// Health check
 app.get("/", (req, res) => {
   res.send("Poet's Open Mic API is running. View docs at /api-docs");
 });
 
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
+  console.log(`Docs: http://localhost:${PORT}/api-docs`);
 });
