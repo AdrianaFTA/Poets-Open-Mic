@@ -8,35 +8,23 @@ export const getPoems = async () => {
 };
 
 // Create a new poem with AI classification
-export const createPoem = async (poemData) => {
-    // 1. First, send the poem text to the NLP microservice for a genre/mood check
-    const nlpResponse = await fetch(NLP_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: poemData.content }),
-    });
-    const nlpData = await nlpResponse.json();
+export const saveDraftPoem = (poem, token) =>
+  fetch("http://localhost:5000/api/poems/draft", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify(poem),
+  }).then(res => res.json());
 
-    // 2. Add the AI-detected genre to your poem data
-    const finalPoemData = {
-        ...poemData,
-        genre: nlpData.category || 'Uncategorized',
-        word_count: nlpData.word_count || 0
-    };
+export const publishPoem = (poem, token) =>
+  fetch("http://localhost:5000/api/poems/publish", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify(poem),
+  }).then(res => res.json());
 
-    // 3. Save the final poem to your PostgreSQL database
-    const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(finalPoemData),
-    });
-    return response.json();
-};
-export const classifyPoem = async (text) => {
-    const response = await fetch('http://localhost:5000/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: text }),
-    });
-    return response.json();
-};
+export const updatePoem = (id, poem, token) =>
+  fetch(`http://localhost:5000/api/poems/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify(poem),
+  }).then(res => res.json());
