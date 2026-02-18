@@ -8,7 +8,9 @@
     "concurrently": "^8.2.2"
   },
   "dependencies": {
+    "natural": "^8.1.0",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "syllable": "^5.0.1"
   }
 }

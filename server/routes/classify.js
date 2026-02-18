@@ -1,14 +1,13 @@
-import express from 'express';
+import express from "express";
 const router = express.Router();
 
-const NLP_SERVICE_URL = 'http://localhost:5000';
+const NLP_SERVICE_URL = "http://localhost:5000";
 
 /**
  * @openapi
  * /classify:
  *   post:
  *     summary: Classify a poem
- *     description: Sends text to the NLP classifier microservice
  *     tags:
  *       - NLP Analysis
  *     requestBody:
@@ -22,25 +21,29 @@ const NLP_SERVICE_URL = 'http://localhost:5000';
  *             properties:
  *               content:
  *                 type: string
- *                 description: The text of the poem to analyze
  *                 example: "The stars shine bright in the quiet night."
  *     responses:
  *       200:
  *         description: Classification successful
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "Classification successful"
+ *               result:
+ *                 category: "Romantic"
  *       400:
  *         description: Missing content in request body
  *       500:
  *         description: Internal server error or NLP service unreachable
  */
-
 router.post("/", async (req, res) => {
   const { content } = req.body;
   if (!content) return res.status(400).json({ message: "Poem content is required" });
 
   try {
     const response = await fetch(`${NLP_SERVICE_URL}/classify`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content }),
     });
 
@@ -48,7 +51,7 @@ router.post("/", async (req, res) => {
       const errorData = await response.json();
       return res.status(response.status).json({
         message: "Microservice error",
-        details: errorData.error || errorData.message
+        details: errorData.error || errorData.message,
       });
     }
 

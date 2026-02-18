@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
+import { metaphone } from 'natural';
+import { syllable } from 'syllable';
 
 dotenv.config();
 
@@ -12,6 +14,42 @@ import poemsRouter from './routes/poems.js';
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+
+// Helper: Check if two words rhyme
+const checkRhyme = (word1, word2) => {
+    // We compare the metaphone (sound) of the words
+    return metaphone.compare(word1, word2); 
+};
+
+// New Route for Analysis
+app.post("/analyze", (req, res) => {
+    const { content } = req.body;
+    const lines = content.split('\n').filter(line => line.trim() !== "");
+    
+    let analysis = {
+        rhymes: [],
+        breakSuggestions: []
+    };
+
+    lines.forEach((line, index) => {
+        // 1. Line Break Logic: Check syllable count
+        if (syllable(line) > 12) {
+            analysis.breakSuggestions.push(`Line ${index + 1} is a bit long. Try a break after 10 syllables.`);
+        }
+
+        // 2. Rhyme Logic: Compare last word of this line with the next line
+        if (index < lines.length - 1) {
+            const word1 = lines[index].trim().split(" ").pop();
+            const word2 = lines[index + 1].trim().split(" ").pop();
+            
+            if (checkRhyme(word1, word2)) {
+                analysis.rhymes.push(`Line ${index + 1} and ${index + 2} rhyme! (${word1}/${word2})`);
+            }
+        }
+    });
+
+    res.json(analysis);
+});
 
 // Swagger config
 const swaggerOptions = {
