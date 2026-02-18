@@ -1,92 +1,83 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import { loginUser } from "../services/authService";
 
-const API_URl ='http://localhost:3000/auth/login';
+export default function Login() {
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-export default function Login(){
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+  const handleSubmit = async (e) => {
+    // First, I stop the page from refreshing so we don't lose our data
+    e.preventDefault();
+    setError("");
 
-    const navigate = useNavigate();
+    try {
+      // I'm sending the credentials to your backend on port 5000
+      const data = await loginUser(formData);
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError("");
+      if (data.token) {
+        // I'm saving the token and user info in localStorage. 
+        // This is like a "VIP Pass" the browser shows the server for every request.
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
 
-        try{
-            const response = await axios.post(API_URl, { email, password});
-            const result = response.data;
-
-            if(result.token){
-                localStorage.setItem("token", result.token);
-                navigate("/"); // home page
-            }else{
-                setError(result.message || " Login failed. Please try again.");
-            }
-            }catch(err){
-                console.error("Login API Error", err);
-                if (err.response && err.response.data && err.response.data.message) {
-                    setError(err.response.data.message);
-                } else {
-                    setError ("An error occured during Login. Check server status.");
-                }
-                
-            } finally{
-                setLoading(false);
-            }
-        };
-
-        return(
-            <div className="flex items-center justify-center min-h-screen bg-gray-100">
-                <form 
-                onSubmit={handleLogin}
-                className="bg-white p-6 rounded-2cl shadow-md w-full max-w-md"
-                >
-                <h2 className="text-2xl font-bold mb-4 text-center"></h2>
-
-                {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-
-                <label className="block mb-2 text-gray-700">Email</label>
-                <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="border p-2 w-full rounded mb-4"
-                    placeholder="Enter your Email"
-                    required
-                    />
-
-                <label className="block mb-2 text-grey-700">Password</label>
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="border p-2 w-full rounded mb-4"
-                    placeholder="Enter your password"
-                    required
-                    />
-
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className="bg-blue-500 hover:bg-blue-600 text-white w-full p-2 rounded"
-                    >
-                        {loading ? "loggin in...": "login"}
-                    </button>
-
-                <p className="text-center text-sm mt-4">
-                    Dont have an account{""}
-                    <a href="/register" className="text-blue-500 hover:underline">
-                    Register
-                    </a>
-                    </p>
-                    </form>
-            </div>
-
-        );
-
+        // Once logged in, I'll whisk you away to your profile!
+        navigate("/profile");
+      } else {
+        // If the backend says no, I'll catch the error message here
+        setError(data.message || "Invalid username or password");
+      }
+    } catch (err) {
+      console.error("Login ERROR:", err);
+      setError("Cannot connect to server. Check if backend is running on port 5001");
     }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#1a1a1a] flex items-center justify-center p-6">
+      <div className="max-w-md w-full bg-[#2a2a2a] p-8 rounded-xl shadow-2xl border border-gray-800">
+        <h2 className="text-3xl font-bold text-white mb-6 text-center">Welcome Back</h2>
+        
+        {error && (
+          <div className="bg-red-500/10 border border-red-500 text-red-500 p-3 rounded mb-4 text-sm">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Username</label>
+            <input
+              type="text"
+              required
+              className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg p-3 text-white focus:border-purple-500 outline-none transition"
+              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-400 text-sm mb-2">Password</label>
+            <input
+              type="password"
+              required
+              className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg p-3 text-white focus:border-purple-500 outline-none transition"
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg transition shadow-lg"
+          >
+            Sign In
+          </button>
+        </form>
+        
+        <p className="mt-6 text-center text-gray-500 text-sm">
+          Don't have an account? <a href="/register" className="text-purple-400 hover:underline">Register here</a>
+        </p>
+      </div>
+    </div>
+  );
+}

@@ -1,11 +1,13 @@
 const express = require("express");
 const natural = require('natural');
+const cors = require('cors');
 
 
 
 
 //express app
 const app = express();
+app.use(cors());
 app.use(express.json()); // This allows the NLP service to read JSON data
 const PORT = process.env.NLP_PORT || 5000;
 

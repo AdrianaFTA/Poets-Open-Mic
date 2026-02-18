@@ -8,6 +8,7 @@
     "concurrently": "^8.2.2"
   },
   "dependencies": {
+    "cors": "^2.8.6",
     "natural": "^8.1.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
