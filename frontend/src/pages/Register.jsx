@@ -16,7 +16,7 @@ export default function Register() {
     try {
       await registerUser({ username, email, password });
       alert("Registration Successful!");
-      navigate("/login");
+      navigate("/editor");
     } catch (error) {
       setMessage("Registration failed. Try a different email.");
     }
