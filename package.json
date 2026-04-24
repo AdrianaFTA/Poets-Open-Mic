@@ -10,6 +10,7 @@
   "dependencies": {
     "cors": "^2.8.6",
     "natural": "^8.1.0",
+    "sentiment": "^5.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "syllable": "^5.0.1"
