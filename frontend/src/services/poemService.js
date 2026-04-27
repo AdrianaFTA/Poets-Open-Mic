@@ -1,5 +1,5 @@
 
-const NLP_URL = 'http://localhost:5000/classify';
+const NLP_URL = 'http://localhost:5001/classify';
 
 const API_URL = 'http://localhost:5000/api/poems';
 
@@ -33,13 +33,25 @@ export const updatePoem = (id, poem, token) =>
     body: JSON.stringify(poem),
   }).then(res => res.json());
 
-// Add your classifyPoem function here if it's missing!
-export const classifyPoem = (content) => 
-  fetch('http://localhost:5000/classify', {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ content }),
-  }).then(res => res.json());
+
+export const classifyPoem = async (content) => {
+  try {
+    const response = await fetch("http://127.0.0.1:5001/classify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: content }) 
+    });
+    
+    if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error("AI Service Error:", error);
+    return null;
+  }
+};
 
   export const getUserPoems = async (token) => {
     const response = await fetch(`${API_URL}/user`, { 

@@ -121,20 +121,50 @@ export default function Editor() {
 
         {/* AI Insight Card: I've made this look like a sleek terminal output */}
         {result && (
-          <div className="mt-4 p-8 bg-[#1a1a1a] rounded-3xl border border-purple-900/30 shadow-2xl animate-slide-up">
-            <h3 className="text-purple-500 font-bold mb-4 uppercase text-xs tracking-widest">Analysis Result</h3>
-            <div className="flex gap-12">
-              <div>
-                <span className="text-gray-500 text-xs block mb-1">Detected Genre</span>
-                <p className="text-2xl font-light">{result.genre || "Universal"}</p>
-              </div>
-              <div>
-                <span className="text-gray-500 text-xs block mb-1">Word Count</span>
-                <p className="text-2xl font-light">{result.word_count} Words</p>
+  <div className="mt-4 p-8 bg-[#1a1a1a] rounded-3xl border border-purple-900/30 shadow-2xl animate-slide-up">
+    <h3 className="text-purple-500 font-bold mb-4 uppercase text-xs tracking-widest">Analysis Result</h3>
+    
+    {/* Use a grid to show 4 stats in a row */}
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      
+      {/* 1. Mood (from Python's primary_emotion) */}
+      <div>
+        <span className="text-gray-500 text-xs block mb-1">Primary Mood</span>
+        <p className="text-2xl font-light text-purple-300 capitalize">
+          {result.primary_emotion || "Neutral"}
+        </p>
+      </div>
+
+      {/* 2. Poetic Style (from Python's poetic_style) */}
+      <div>
+        <span className="text-gray-500 text-xs block mb-1">Poetic Style</span>
+        <p className="text-2xl font-light">{result.poetic_style || "Free Verse"}</p>
+      </div>
+
+      {/* 3. Rhymes (from Python's rhyme_matches_found) */}
+      <div>
+        <span className="text-gray-500 text-xs block mb-1">Rhyme Matches</span>
+        <p className="text-2xl font-light">{result.rhyme_matches_found || 0}</p>
+      </div>
+
+      {/* 4. Semantic Tags (Keywords extracted by spaCy) */}
+      <div>
+        <span className="text-gray-500 text-xs block mb-1">Keywords</span>
+        <div className="flex flex-wrap gap-2 mt-2">
+          {result.semantic_tags && result.semantic_tags.length > 0 ? (
+            result.semantic_tags.map((tag, index) => (
+              <span key={index} className="text-[10px] bg-purple-900/30 px-2 py-1 rounded-full border border-purple-500/20 text-purple-200">
+                #{tag}
+              </span>
+            ))
+          ) : (
+            <p className="text-sm text-gray-600">None detected</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        )}
+        )} 
       </div>
     </div>
   );
